@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # get-epg.py —— 从公开 XMLTV 源下载 EPG，同时保存 epg.xml 和 epg.xml.gz
 import urllib.request, gzip, os
+import time
 
 SOURCES = [
-    "https://gitee.com/taksssss/tv/raw/main/epg/epgpw_cn.xml.gz",  # erw gitee镜像
     "http://epg.51zmt.top:8000/e.xml.gz",   # 主源：老张EPG 压缩版(.zg)
     "https://epg.zsdc.eu.org/t.xml.gz",        # 备用源
 ]
@@ -11,7 +11,9 @@ OUT = "epg.xml"
 
 def fetch(url):
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-    return urllib.request.urlopen(req, timeout=60).read()
+    data = urllib.request.urlopen(req, timeout=60).read()
+    time.sleep(2)   # 请求之后休眠2秒，减轻服务器压力
+    return data
 
 def main():
     for url in SOURCES:
@@ -30,6 +32,7 @@ def main():
             return
         except Exception as e:
             print(f"失败: {url} -> {e}")
+            time.sleep(2)   # 请求异常也休眠2秒
     raise SystemExit("所有数据源均失败")
 
 if __name__ == "__main__":
