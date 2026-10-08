@@ -1,8 +1,7 @@
 name: EPG‑Auto‑Build
 on:
   schedule:
-    - cron: '0 20 * * *'
-    - cron: '0 8 * * *'
+    - cron: '0 */4 * * *'
   workflow_dispatch:
 
 jobs:
@@ -26,5 +25,10 @@ jobs:
           git config --global user.name "epg-bot"
           git config --global user.email "epg-bot@users.noreply.github.com"
           git add -A
-          git commit -m "EPG auto update $(date -u '+%F %T') UTC" || echo "Nothing changed, skip commit"
-          git push
+          # 判断文件是否改动，没有改动直接跳过提交
+          if git diff --quiet --exit-code; then
+            echo "文件没有变化，跳过提交"
+          else
+            git commit -m "EPG auto update $(date -u '+%F %T') UTC"
+            git push
+          fi
