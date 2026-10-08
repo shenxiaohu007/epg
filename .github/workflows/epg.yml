@@ -1,0 +1,36 @@
+name: EPG‑Auto‑Build
+on:
+  schedule:
+    # 北京时间04:00 → UTC 20点
+    - cron: '0 20 * * *'
+    # 北京时间16:00 → UTC 08点
+    - cron: '0 8 * * *'
+  workflow_dispatch:
+
+jobs:
+  epg_build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python 3.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+
+      - name: Run EPG generation script
+        run: |
+          set -e
+          python3 get-epg.py
+
+      - name: Commit & Push generated EPG files back to GitHub repo
+        run: |
+          git config --global user.name "epg-bot"
+          git config --global user.email "epg-bot@users.noreply.github.com"
+          git add -A
+          git commit -m "EPG auto update $(date -u '+%F %T') UTC" || echo "Nothing changed, skip commit"
+          git push
