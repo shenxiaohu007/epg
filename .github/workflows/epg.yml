@@ -1,9 +1,7 @@
 name: EPG‑Auto‑Build
 on:
   schedule:
-    # 北京时间04:00 → UTC 20点
     - cron: '0 20 * * *'
-    # 北京时间16:00 → UTC 08点
     - cron: '0 8 * * *'
   workflow_dispatch:
 
@@ -13,9 +11,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Python 3.9
         uses: actions/setup-python@v5
@@ -24,10 +19,9 @@ jobs:
 
       - name: Run EPG generation script
         run: |
-          set -e
           python3 get-epg.py
 
-      - name: Commit & Push generated EPG files back to GitHub repo
+      - name: Commit & Push generated EPG files back to GitHub
         run: |
           git config --global user.name "epg-bot"
           git config --global user.email "epg-bot@users.noreply.github.com"
