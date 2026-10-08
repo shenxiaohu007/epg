@@ -3,7 +3,7 @@
 import urllib.request, gzip, os
 
 SOURCES = [
-    "https://gitee.com/taksssss/tv/raw/main/epg/epgpw_cn.xml.gz",  #erw gitee镜像
+    "https://gitee.com/taksssss/tv/raw/main/epg/epgpw_cn.xml.gz",  # erw gitee镜像
     "http://epg.51zmt.top:8000/e.xml.gz",   # 主源：老张EPG 压缩版(.zg)
     "https://epg.zsdc.eu.org/t.xml.gz",        # 备用源
 ]
