@@ -4,8 +4,8 @@ import urllib.request, gzip, os
 import time
 
 SOURCES = [
-    "https://raw.githubusercontent.com/kuke31/xmlgz/main/e.xml.gz",   # 主源： ewr当天
     "http://epg.51zmt.top:8000/e.xml.gz",   # 老张EPG 压缩版
+    "https://raw.githubusercontent.com/kuke31/xmlgz/main/e.xml.gz",   # 主源： ewr当天
     "https://epg.zsdc.eu.org/t.xml.gz",        # 备用源
 ]
 OUT = "epg.xml"
